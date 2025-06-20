@@ -24,9 +24,9 @@ jobs:
           rm -rf index.m3u8
           rm -rf *.html
           if [[ "${{ github.event.inputs.commit_message }}" == *":"* ]]; then
-            curl https://stremsrc-fawn.vercel.app/stream/series/${{ github.event.inputs.commit_message }} | jq '.streams[0].url' | xargs -L 1 wget -O index.m3u8
+            curl https://stremsrc-fawn.vercel.app/stream/series/${{ github.event.inputs.commit_message }}.json | jq '.streams[0].url' | xargs -L 1 wget -O index.m3u8
           else
-            curl https://stremsrc-fawn.vercel.app/stream/movie/${{ github.event.inputs.commit_message }} | jq '.streams[0].url' | xargs -L 1 wget -O index.m3u8
+            curl https://stremsrc-fawn.vercel.app/stream/movie/${{ github.event.inputs.commit_message }}.json | jq '.streams[0].url' | xargs -L 1 wget -O index.m3u8
           fi
           # wget "${{ github.event.inputs.commit_message }}" -O index.m3u8
           grep https:// index.m3u8 | xargs -L 1 wget -nv --retry-connrefused --waitretry=10 --read-timeout=20 --timeout=15 -t 0
